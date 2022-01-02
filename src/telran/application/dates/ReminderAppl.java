@@ -6,6 +6,7 @@ import java.time.temporal.ChronoUnit;
 
 public class ReminderAppl {
 private static final long DEFAULT_START_WAITING_MILLISECONDS = 0;
+private static final long DEFAULT_BEEPS_DURATION = 3_600_000; //in milliseconds
 static long intervalOfBeeps;
 static ChronoUnit unit;
 static long beepsDuration;
@@ -44,7 +45,7 @@ static long beepsStartWaiting;
 	}
 	private static void setBeepsStartWaiting(String[] args) throws Exception {
 		if (args.length < 4) {
-			beepsStartWaiting = DEFAULT_START_WAITING_MILLISECONDS; //one hour to milliseconds
+			beepsStartWaiting = DEFAULT_START_WAITING_MILLISECONDS; 
 		} else {
 			try {
 				beepsStartWaiting = Long.parseLong(args[3]);
@@ -60,12 +61,12 @@ static long beepsStartWaiting;
 		
 	}
 	private static void intervalToMillis() {
-		intervalOfBeeps = Duration.of(intervalOfBeeps, unit).toMillis();
+		intervalOfBeeps = Duration.of(intervalOfBeeps, unit).toMillis();//conversion to milliseconds from unit
 		
 	}
 	private static void setBeepsDuration(String[] args) throws Exception {
 		if (args.length < 3) {
-			beepsDuration = 3_600_000; //one hour to milliseconds
+			beepsDuration = DEFAULT_BEEPS_DURATION; //one hour to milliseconds
 		} else {
 			try {
 				beepsDuration = Long.parseLong(args[2]);
@@ -87,7 +88,7 @@ static long beepsStartWaiting;
 		try {
 			unit = ChronoUnit.valueOf(args[1].toUpperCase());
 			
-		} catch (RuntimeException e) {
+		} catch (IllegalArgumentException e) {
 			throw new Exception("Wrong Chrono Unit");
 		}
 		
